@@ -11,7 +11,7 @@
 
 ## Admin Login Info
 
-email: admin@laravelproject.com
+email: admin@example.com
 password: admin
 
 
@@ -31,6 +31,6 @@ php artisan db:seed
 ```
 ## Author
 
-- [Sanish Gurung](https://sanishgurung.com.np)
+- [Gandavaa](https://gandavaa.com)
 
 Contact me, if you need any help.
