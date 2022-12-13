@@ -17,7 +17,6 @@ password: admin
 
 ```
 
-// Then set database credentials in .env file
 
 composer install
 php artisan key:generate
