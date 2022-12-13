@@ -13,14 +13,9 @@
 
 email: admin@example.com
 password: admin
-
-
 ## Steps for Installtion
 
 ```
-git clone https://github.com/sanz/simple-larablog.git simple-larablog
-cd simple-larablog
-cp .env.example .env
 
 // Then set database credentials in .env file
 
