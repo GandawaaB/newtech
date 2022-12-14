@@ -1,5 +1,5 @@
 <!-- Navigation -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
     <div class="container">
         <a class="navbar-brand" href="{{ url('/') }}">{{ config('app.name', 'Larablog')}}</a>
 
@@ -40,6 +40,15 @@
                         </div>
                     </li>
                 @else
+                    {{-- @foreach ($categories as $category)
+                        <li>
+                            <a href="{{ $category->path() }}">
+                                {{ $category->name }}
+                            </a>
+                        </li>
+                    @endforeach --}}
+                      {{-- @include('partials.category-widget') --}}
+
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('login') }}">Login</a>
                     </li>
