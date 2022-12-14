@@ -20,17 +20,17 @@
             </p>
 
             <!-- Author -->
-            <p class="lead">
-                by
+            {{-- <p class="lead">
                 <a href="#">{{ $post->user->name }}</a>
-            </p>
-
+            </p> --}}
+            
             <hr>
 
             <!-- Date/Time -->
-            <p>Posted on {{ $post->created_at->toDayDateTimeString() }}</p>
+            <p>Нийтэлсэн {{ $post->created_at->toDayDateTimeString() }}</p>
 
             <hr>
+            <img src ="{{asset('images/'. $post->image)}}" class="img-fluid" />
 
             <!-- Post Content -->
             <p class="lead">{{ $post->body }}</p>
@@ -38,9 +38,9 @@
             <hr>
 
             <!-- Comments Form -->
-            @auth @include('partials.comment-form') @endauth
-
-            <h3>Comments</h3>
+            {{-- @auth @include('partials.comment-form') @endauth --}}
+            @include('partials.comment-form')
+            <h3>Сэтгэгдлүүд</h3>
 
             <hr>
 

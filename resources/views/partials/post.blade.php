@@ -11,14 +11,15 @@
                 {{ $post->title }}
             </a>
         </h2>
+        <img src ="{{asset('images/'. $post->image)}}" class="img-fluid" />
         <p class="card-text">{{ substr($post->body, 0, 200) }}</p>
 
         <a href="{{ $post->path() }}" class="btn btn-primary">
-            Read More &rarr;
+            Дэлгэрэнгүй &rarr;
         </a>
     </div>
     <div class="card-footer text-muted">
-        Posted on {{ $post->created_at->toDayDateTimeString() }} by <a href="#">{{ $post->user->name }}</a>
-        <span class="badge badge-pill badge-info float-right">Comments {{ $post->comments_count }}</span>
+        Нийтэлсэн {{ $post->created_at->toDayDateTimeString() }}</a>
+        <span class="badge badge-pill badge-info float-right">Сэтгэгдэл {{ $post->comments_count }}</span>
     </div>
 </div>

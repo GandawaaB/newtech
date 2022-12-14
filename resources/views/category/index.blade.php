@@ -7,7 +7,7 @@
         
             <div class="col-md-8">
 
-                <h3 class="my-4">Post with category
+                <h3 class="my-4">Ангилал
                     <small>"{{ $category->name }}"</small>
                 </h3>
 

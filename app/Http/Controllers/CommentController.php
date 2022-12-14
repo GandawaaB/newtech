@@ -14,16 +14,17 @@ class CommentController extends Controller
 
     public function destroy(Comment $comment)
     {
-        if($comment->user_id != auth()->user()->id && auth()->user()->isNotAdmin()) {;
+        // if($comment->user_id != auth()->user()->id && auth()->user()->isNotAdmin()) {;
+        if($comment->user_id != auth()->user()->isNotAdmin()) { 
             return redirect()
                 ->route('user.comments')
-                ->withMessage("You can't delete other peoples comment.");;
+                ->withMessage("Сэтгэгдэл устгах эрх байхгүй байна.");
         }
 
         $comment->delete();
 
         return redirect()
             ->route('user.comments')
-            ->withMessage('Comment deleted successfully.');
+            ->withMessage('Сэтгэгдэл амжилттай устлаа.');
     }
 }

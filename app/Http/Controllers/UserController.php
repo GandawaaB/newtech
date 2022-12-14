@@ -43,7 +43,8 @@ class UserController extends Controller
 
     public function comments()
     {
-        $comments = Comment::with(['user', 'post'])->paginate(10);
+
+        $comments = Comment::with(['user','post'])->paginate(10);
 
         return view('user.comments', compact('comments'));
     }

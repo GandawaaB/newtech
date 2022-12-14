@@ -14,7 +14,7 @@
                 </div>
 
                 <div class="card-body">
-                <form action="{{ route('user.posts.update', $post) }}" method="POST">
+                <form action="{{ route('user.posts.update', $post) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PATCH')
 
@@ -38,6 +38,15 @@
                                     <strong>{{ $message }}</strong>
                                 </span> 
                             @enderror
+                        </div>
+                        
+                        <div class="form-group">
+                            <img src="{{asset('images/'. $post->image)}}" width="100" height="100" />
+                            <span> 
+                                <label for="img">Зурагаа сонгоно уу:</label>
+                                <input type="file" id="image" name="image"  accept="image/*">
+                            </span>
+
                         </div>
 
                         <div class="form-group">

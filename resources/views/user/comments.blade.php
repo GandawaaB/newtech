@@ -28,7 +28,7 @@
                         <tbody>
                             @forelse ($comments as $comment)
                                 <tr>
-                                    <td>{{ $comment->user->name }}</td>
+                                    <td>{{ $comment->name }}</td>
                                     <td>{{ $comment->body }}</td>
                                     <td>{{ $comment->post->title }}</td>
 

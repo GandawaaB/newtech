@@ -1,8 +1,8 @@
 <?php
 
-use App\Post;
 use App\Category;
 use App\Comment;
+use App\Post;
 use App\User;
 use Illuminate\Database\Seeder;
 
@@ -26,9 +26,9 @@ class DataSeeder extends Seeder
         factory(Comment::class, 40)->create();
 
         $user = User::create([
-            'name'      => 'Admin',
-            'email'     => 'admin@laravelproject.com',
-            'password'  => bcrypt('admin')
+            'name' => 'Admin',
+            'email' => 'admin@example.com',
+            'password' => bcrypt('admin'),
         ]);
 
         $user->is_admin = true;

@@ -14,9 +14,9 @@
                 </div>
 
                 <div class="card-body">
-                <form action="{{ route('user.posts.store') }}" method="POST">
+                <form action="{{ route('user.posts.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
-
+ 
 
                         <div class="form-group">
                             <label for="">Title</label>
@@ -39,7 +39,11 @@
                                 </span> 
                             @enderror
                         </div>
-
+                        <div class="form-group">
+                            <label for="img">Зурагаа сонгоно уу:</label>
+                            <input type="file" id="image" name="image" required accept="image/*">
+                        </div>
+                       
                         <div class="form-group">
                             <label for="">Categories</label>
                             <select name="category" class="form-control">

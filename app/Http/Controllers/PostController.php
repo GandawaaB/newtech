@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Comment;
 use App\Post;
 use Illuminate\Http\Request;
 
@@ -9,7 +9,7 @@ class PostController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->except(['index', 'search', 'show']);
+        $this->middleware('auth')->except(['index', 'search', 'show','comment']);
     }
     
     public function index(Request $request)
@@ -40,21 +40,31 @@ class PostController extends Controller
 
     public function show(Post $post)
     {
-        $post = $post->load(['comments.user', 'user', 'category']);
+        $post = $post->load(['comments', 'user', 'category']);
 
         return view('post.show', compact('post'));
     }
 
     public function comment(Request $request, Post $post)
     {
-        $this->validate($request, ['body' => 'required']);
+        $this->validate($request, ['body' => 'required','name'=>'required']);
 
-        $post->comments()->create([
-            'user_id'   => auth()->id(),
-            'body'      => $request->body           
-        ]);
+        $comment = new Comment;
+        
+        $comment ->name = $request ->name;
+        $comment ->body = $request ->body;
+        $comment ->post_id = $post ->id;
 
-        session()->flash('message', 'Comment successfully created.');
+        $comment ->save();
+        
+
+        // $post->comments()->create([
+        //     // 'user_id'   => auth()->id(), 
+        //     'name' => $request->name,
+        //     'body'      => $request->body           
+        // ]);
+
+        session()->flash('message', 'Сэтгэгдэл нийтлэгдлээ.');
 
         return redirect("/posts/{$post->id}");
             
@@ -71,18 +81,23 @@ class PostController extends Controller
             'title'      => 'required|max:250',
             'body'       => 'required|min:50',
             'category'   => 'required|exists:categories,id',
-            'publish'    => 'accepted'
+            'publish'    => 'accepted',
+            // 'image' => 'mimes:jpeg,bmp,png'
         ]);
+
+        $imageName = time().'.'.$request->image->extension(); 
+        $request->image->move(public_path('images'), $imageName);
 
         $post = Post::create([
             'title'         => $request->title,
             'body'          => $request->body,
             'user_id'       => auth()->id(),
-            'category_id'   => $request->category,
+            'category_id'   => $request->category, 
             'is_published'  => $request->has('publish'),
+            'image' => $imageName
         ]);
 
-        session()->flash('message', 'Post created successfully.');
+        session()->flash('message', 'Амжилттай нийтэллээ.');
 
         return redirect()->route('user.posts');
     }
@@ -91,9 +106,9 @@ class PostController extends Controller
     {
         if($post->user_id != auth()->user()->id && auth()->user()->isNotAdmin()) {
 
-            session()->flash('message', "You can't edit other peoples post.");
+            session()->flash('message', "Танд засах эрх байхгүй байна.");
 
-            return redirect()->route('user.posts');
+            return redirect()->route('user.posts'); 
         }
 
         return view('user.posts.edit', compact('post'));
@@ -103,7 +118,7 @@ class PostController extends Controller
     {
         if($post->user_id != auth()->user()->id && auth()->user()->isNotAdmin()) {
 
-            session()->flash('message', "You can't update other peoples post.");
+            session()->flash('message', "Танд засах эрх байхгүй байна.");
 
             return redirect()->route('user.posts');
         }
@@ -114,31 +129,61 @@ class PostController extends Controller
             'category'   => 'required|exists:categories,id',
             'publish'    => 'accepted'
         ]);
+        if ($request->image) {
 
-        $post->update([
-            'title'       => $request->title,
-            'body'        => $request->body,
-            'category_id' => $request->category,
-            'is_published'  => $request->has('publish'),
-        ]);
+            $image_path = 'images/'.$post->image;
 
-        session()->flash('message', 'Post updated successfully.');
+            if (file_exists($image_path)) {
+                @unlink($image_path);
+            }
+            
+            $imageName = time().'.'.$request->image->extension(); 
+            $request->image->move(public_path('images'), $imageName);
 
-        return redirect()->to("/posts/$post->id");
+            $post->update([
+                'title'       => $request->title,
+                'body'        => $request->body,
+                'category_id' => $request->category,
+                'is_published'  => $request->has('publish'),
+                'image' => $imageName
+            ]);
+            session()->flash('message', 'Нийтлэл амжилттай өөрчлөгдлөө');
+
+            return redirect()->to("/posts/$post->id");
+
+        }else{
+            $post->update([
+                'title'       => $request->title,
+                'body'        => $request->body,
+                'category_id' => $request->category,
+                'is_published'  => $request->has('publish'),
+
+            ]);
+
+            session()->flash('message', 'Нийтлэл амжилттай өөрчлөгдлөө');
+
+            return redirect()->to("/posts/$post->id");
+        }
+
+        
     }
 
     public function destroy(Post $post)
     {
         if($post->user_id != auth()->user()->id && auth()->user()->isNotAdmin()) {
 
-            session()->flash('message', "You can't delete other peoples post.");
+            session()->flash('message', "Танд устгах эрх байнгүй байна.");
 
             return redirect()->route('user.posts');
         }
+        $image_path = 'images/'.$post->image;
 
+        if (file_exists($image_path)) {
+            @unlink($image_path);
+        }
         $post->delete();
 
-        session()->flash('message', 'Post deleted successfully.');
+        session()->flash('message', 'Нийтлэл амжилттай устлаа.');
 
         return redirect()->route('user.posts');
     }

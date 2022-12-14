@@ -9,9 +9,10 @@ class Post extends Model
     protected $fillable = [
         'title',
         'body',
-        'user_id',
+        'user_id', 
         'category_id',
-        'is_published'
+        'is_published',
+        'image'
     ];
 
     protected static function boot()
